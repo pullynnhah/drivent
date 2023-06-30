@@ -1,6 +1,5 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
-import { add } from 'husky';
 import { AuthenticatedRequest } from '@/middlewares';
 import enrollmentsService from '@/services/enrollments-service';
 
@@ -34,11 +33,10 @@ export async function getAddressFromCEP(req: AuthenticatedRequest, res: Response
 
   try {
     const address = await enrollmentsService.getAddressFromCEP(cep);
-    res.status(httpStatus.OK).send(address);
+    return res.status(httpStatus.OK).send(address);
   } catch (error) {
-    console.log(error);
     if (error.name === 'NotFoundError') {
-      return res.send(httpStatus.NO_CONTENT);
+      return res.sendStatus(httpStatus.NO_CONTENT);
     }
   }
 }
